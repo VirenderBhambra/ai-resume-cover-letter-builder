@@ -19,37 +19,43 @@ import { Button } from "../../../ui/button";
 import GlobalApi from "../../../../../service/GlobalApi";
 
 export const Resume = () => {
-  const {userId} = useAuth();
+  const { userId } = useAuth();
   const { user } = useUser();
   const [resumeTitle, setResumeTitle] = useState();
   const [oldResumes, setOldResumes] = useState();
+
   const onChange = (e) => {
     setResumeTitle(e.target.value);
   };
+
   const onSubmit = async () => {
     const uuid = uuidv4();
-    console.log(resumeTitle, uuid);
     const data = {
-      data: {
-        resumeId: uuid,
-        resumeTitle: resumeTitle,
-        userEmail: user?.primaryEmailAddress?.emailAddress,
-        userName: user?.fullName,
-        userId: userId,
-      },
+      resumeId: uuid,
+      resumeTitle: resumeTitle,
+      email: user?.primaryEmailAddress?.emailAddress,
+      userName: user?.fullName,
+      user_id: userId,
     };
-    const res = await GlobalApi.createResume(data);
-    console.log(res);
+    try {
+      const res = await GlobalApi.createResume(data);
+      console.log(res)
+      getResumes();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const getResumes = async () => {
     const res = await GlobalApi.getResume();
     setOldResumes(res);
-    console.log(res);
   };
+
   useEffect(() => {
     // FETCHES THE PREVIOUS RESUMES OF USER USING USERID IN SUPABASE TABLE
     getResumes();
   }, []);
+
   return (
     <div className="p-4 rounded-lg  flex flex-col gap-2">
       <Dialog>
@@ -72,8 +78,8 @@ export const Resume = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {oldResumes ? (<h2>Your Resumes...</h2>) : (<h2>No Resumes found...</h2>)}
-      <div className="grid gap-2 sm:grid-cols-2  lg:grid-cols-3">
+      {oldResumes ? <h2>Your Resumes...</h2> : <h2>No Resumes found...</h2>}
+      <div className="grid sm:grid-cols-2  lg:grid-cols-3">
         {
           oldResumes &&
             oldResumes
@@ -90,7 +96,7 @@ export const Resume = () => {
         }
       </div>
 
-      <ResumeView /> 
+      <ResumeView />
     </div>
   );
 };
