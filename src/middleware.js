@@ -1,7 +1,7 @@
 import { authMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = ['/','/sign-in', '/sign-up','/about'];
+const isPublicRoute = ['/','/sign-in', '/sign-up','/about', '/api/resume'];
 
 export default authMiddleware({
   publicRoutes:[isPublicRoute],

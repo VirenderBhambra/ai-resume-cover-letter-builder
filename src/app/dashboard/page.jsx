@@ -16,7 +16,7 @@ const Dashboard = () => {
   
   const [path,setPath] = useState(defaultPath)
   return (
-    <div className=" h-[calc(100vh_-_64px)] flex ">
+    <div className=" min-h-screen flex ">
       <Sidebar handleClick = {handleClick}/>
       <div className="bg-gray-200 flex-1">
         <h1 className="p-4 cursor-pointer shadow-md rounded-md text-green-800">{path}</h1>
